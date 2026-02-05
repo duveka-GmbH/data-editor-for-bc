@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 //
 // Original author — Volodymyr Dvernytskyi (Data Editor Tool)
-page 81006 "DET Key"
+page 5537547 "DET Key"
 {
     Caption = 'Key';
     PageType = List;

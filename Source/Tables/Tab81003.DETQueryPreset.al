@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 //
 // Original author — Volodymyr Dvernytskyi (Data Editor Tool)
-table 81003 "DET Query Preset"
+table 5537544 "DET Query Preset"
 {
     Caption = 'Preset';
     DataClassification = CustomerContent;

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 //
 // Original author — Volodymyr Dvernytskyi (Data Editor Tool)
-page 81011 "DET Import/Export Dialog"
+page 5537552 "DET Import/Export Dialog"
 {
     Caption = 'Import/Export Dialog';
     PageType = StandardDialog;

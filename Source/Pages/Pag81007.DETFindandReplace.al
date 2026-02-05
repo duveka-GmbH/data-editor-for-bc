@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 //
 // Original author — Volodymyr Dvernytskyi (Data Editor Tool)
-page 81007 "DET Find and Replace"
+page 5537548 "DET Find and Replace"
 {
     Caption = 'Find and Replace';
     PageType = Worksheet;

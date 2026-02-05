@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 //
 // Original author — Volodymyr Dvernytskyi (Data Editor Tool)
-table 81001 "DET Field"
+table 5537542 "DET Field"
 {
     Caption = 'Field';
     DataClassification = CustomerContent;

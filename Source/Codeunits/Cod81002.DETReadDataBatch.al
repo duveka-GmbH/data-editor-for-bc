@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 //
 // Original author — Volodymyr Dvernytskyi (Data Editor Tool)
-codeunit 81002 "DET Read Data Batch"
+codeunit 5537543 "DET Read Data Batch"
 {
     TableNo = "DET Data Editor Buffer";
 

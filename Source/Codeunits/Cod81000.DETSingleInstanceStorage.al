@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 //
 // Original author — Volodymyr Dvernytskyi (Data Editor Tool)
-codeunit 81000 "DET Single Instance Storage"
+codeunit 5537541 "DET Single Instance Storage"
 {
     SingleInstance = true;
     EventSubscriberInstance = Manual;

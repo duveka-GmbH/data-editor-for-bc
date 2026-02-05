@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 //
 // Original author — Volodymyr Dvernytskyi (Data Editor Tool)
-table 81006 "DET Binary Data Buffer"
+table 5537547 "DET Binary Data Buffer"
 {
     Caption = 'Binary Data Buffer';
     DataClassification = CustomerContent;

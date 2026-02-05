@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 //
 // Original author — Volodymyr Dvernytskyi (Data Editor Tool)
-codeunit 81003 "DET Data Operations"
+codeunit 5537544 "DET Data Operations"
 {
     Permissions = tabledata "Vendor Ledger Entry" = rimd, tabledata "FA Ledger Entry" = rimd, tabledata "Job Ledger Entry" = rimd, tabledata "Item Ledger Entry" = rimd,
      tabledata "Res. Ledger Entry" = rimd, tabledata "Check Ledger Entry" = rimd, tabledata "Cust. Ledger Entry" = rimd, tabledata "Service Ledger Entry" = rimd,

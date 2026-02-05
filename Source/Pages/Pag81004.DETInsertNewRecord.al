@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 //
 // Original author — Volodymyr Dvernytskyi (Data Editor Tool)
-page 81004 "DET Insert New Record"
+page 5537545 "DET Insert New Record"
 {
     Caption = 'Insert New Record';
     PageType = StandardDialog;

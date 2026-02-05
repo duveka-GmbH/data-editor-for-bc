@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 //
 // Original author — Volodymyr Dvernytskyi (Data Editor Tool)
-enum 81001 "DET Import On Find"
+enum 5537542 "DET Import On Find"
 {
     Extensible = true;
 

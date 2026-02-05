@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 //
 // Original author — Volodymyr Dvernytskyi (Data Editor Tool)
-table 81002 "DET Find and Replace"
+table 5537543 "DET Find and Replace"
 {
     Caption = 'Find and Replace';
     DataClassification = CustomerContent;

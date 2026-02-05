@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 //
 // Original author — Volodymyr Dvernytskyi (Data Editor Tool)
-page 81005 "DET Select Fields"
+page 5537546 "DET Select Fields"
 {
     Caption = 'Select Fields';
     PageType = List;
