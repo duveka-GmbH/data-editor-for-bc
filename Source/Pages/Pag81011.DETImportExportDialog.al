@@ -4,9 +4,9 @@
 // Original author — Volodymyr Dvernytskyi (Data Editor Tool)
 page 81011 "DET Import/Export Dialog"
 {
-    ApplicationArea = All;
     Caption = 'Import/Export Dialog';
     PageType = StandardDialog;
+    UsageCategory = None;
 
     layout
     {
@@ -16,17 +16,17 @@ page 81011 "DET Import/Export Dialog"
             {
                 field(InfoTxt; InfoTxt)
                 {
-                    ApplicationArea = All;
                     Caption = 'Info';
                     ToolTip = 'Info';
                     Editable = false;
                     MultiLine = true;
+                    ApplicationArea = All;
                 }
                 field(FileFormat; FileFormat)
                 {
-                    ApplicationArea = All;
                     Caption = 'File Format';
                     ToolTip = 'File Format';
+                    ApplicationArea = All;
                     trigger OnValidate()
                     begin
                         ExportBLOB := false;
@@ -39,23 +39,23 @@ page 81011 "DET Import/Export Dialog"
                     Visible = not IsImport and (FileFormat = FileFormat::JSON);
                     field(ExportBLOB; ExportBLOB)
                     {
-                        ApplicationArea = All;
                         Caption = 'Export BLOB (experemintal)';
                         ToolTip = 'Enable export of data from BLOB fields in Base64.';
+                        ApplicationArea = All;
                     }
                     field(ExportMedia; ExportMedia)
                     {
-                        ApplicationArea = All;
                         Caption = 'Export Media (experemintal)';
                         ToolTip = 'Enable export of data from Media fields in Base64.';
+                        ApplicationArea = All;
                     }
                 }
                 field(ImportOnFind; ImportOnFind)
                 {
-                    ApplicationArea = All;
                     Caption = 'Import On Find';
                     ToolTip = 'Action to do when imported record is already exist in database';
                     Visible = IsImport;
+                    ApplicationArea = All;
                 }
             }
         }

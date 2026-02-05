@@ -6418,45 +6418,6 @@ page 81000 "DET Data Editor Buffer"
     }
     actions
     {
-        area(Promoted)
-        {
-            actionref("DET Delete All_Promoted"; "DET Delete All")
-            {
-
-            }
-            actionref(InsertNew_promoted; InsertNew)
-            {
-
-            }
-            actionref("DET Update Column_promoted"; "DET Update Column")
-            {
-
-            }
-            actionref("DET Copy Column To Column_promoted"; "DET Copy Column To Column")
-            {
-
-            }
-            actionref("DET Sort_promoted"; "DET Sort")
-            {
-
-            }
-            actionref("DET Find & Replace_promoted"; "DET Find & Replace")
-            {
-
-            }
-            actionref(Refresh_promoted; Refresh)
-            {
-
-            }
-            actionref(ExportTableData_promoted; ExportTableData)
-            {
-
-            }
-            actionref(ImportTableData_promoted; ImportTableData)
-            {
-
-            }
-        }
         area(Processing)
         {
             action("DET Delete All")
@@ -6465,6 +6426,8 @@ page 81000 "DET Data Editor Buffer"
                 Image = Delete;
                 Caption = 'Delete All';
                 ToolTip = 'Deletes all filtered data, used to simplify deletion when the page has not loaded all data pages.';
+                Promoted = true;
+                PromotedCategory = Process;
                 trigger OnAction()
                 begin
                     if Rec.IsEmpty() then
@@ -6486,6 +6449,8 @@ page 81000 "DET Data Editor Buffer"
                 Image = Add;
                 Caption = 'Insert new record';
                 ToolTip = 'Insert new record';
+                Promoted = true;
+                PromotedCategory = Process;
                 trigger OnAction()
                 begin
                     InsertNewRecord();
@@ -6497,6 +6462,8 @@ page 81000 "DET Data Editor Buffer"
                 Image = Column;
                 Caption = 'Update Column';
                 ToolTip = 'Update Column';
+                Promoted = true;
+                PromotedCategory = Process;
                 trigger OnAction()
                 begin
                     UpdateColumn();
@@ -6508,6 +6475,8 @@ page 81000 "DET Data Editor Buffer"
                 Image = Column;
                 Caption = 'Copy Column To Column';
                 ToolTip = 'Copy Column To Column';
+                Promoted = true;
+                PromotedCategory = Process;
                 trigger OnAction()
                 begin
                     CopyColumnToColumn();
@@ -6519,6 +6488,8 @@ page 81000 "DET Data Editor Buffer"
                 Image = SortAscending;
                 Caption = 'Sort';
                 ToolTip = 'Sort';
+                Promoted = true;
+                PromotedCategory = Process;
                 trigger OnAction()
                 begin
                     SetCustomSort();
@@ -6530,6 +6501,8 @@ page 81000 "DET Data Editor Buffer"
                 Image = Find;
                 Caption = 'Find & Replace';
                 ToolTip = 'Find & Replace';
+                Promoted = true;
+                PromotedCategory = Process;
                 trigger OnAction()
                 begin
                     FindAndReplace();
@@ -6541,6 +6514,8 @@ page 81000 "DET Data Editor Buffer"
                 Image = Refresh;
                 Caption = 'Refresh';
                 ToolTip = 'Refresh this page with current filters';
+                Promoted = true;
+                PromotedCategory = Process;
 
                 trigger OnAction()
                 begin
@@ -6553,6 +6528,8 @@ page 81000 "DET Data Editor Buffer"
                 Caption = 'Export Table Data';
                 ToolTip = 'Export Table Data, only loaded fields will be exported.';
                 Image = ExportDatabase;
+                Promoted = true;
+                PromotedCategory = Process;
                 trigger OnAction()
                 begin
                     ExportTable();
@@ -6564,6 +6541,8 @@ page 81000 "DET Data Editor Buffer"
                 Caption = 'Import Table Data';
                 ToolTip = 'Import Table Data, depends on previously selected validation.';
                 Image = ImportDatabase;
+                Promoted = true;
+                PromotedCategory = Process;
                 trigger OnAction()
                 begin
                     ImportTable();
@@ -6767,7 +6746,7 @@ page 81000 "DET Data Editor Buffer"
         InsertNewRecordPage.SetInitData(RecRef.Number(), WithoutValidate);
         if not (InsertNewRecordPage.RunModal() in [Action::LookupOK, Action::OK]) then
             exit;
-        NewRecordId := InsertNewRecordPage.GetResultRecordID();
+        InsertNewRecordPage.GetResultRecordID(NewRecordId);
         RefreshData();
         Rec.SetRange("Source Record ID", NewRecordId);
         Rec.FindFirst();
@@ -6898,7 +6877,6 @@ page 81000 "DET Data Editor Buffer"
         if CustomTableView <> '' then
             RecRef.SetView(CustomTableView);
 
-        RecRef.ReadIsolation := RecRef.ReadIsolation::ReadCommitted;
         TotalRecordCount := DataOperations.Count(RecRef);
 
         if TotalRecordCount = 0 then
@@ -6999,7 +6977,6 @@ page 81000 "DET Data Editor Buffer"
         LocalRecRef.Open(RecRef.Number());
         if CustomTableView <> '' then
             LocalRecRef.SetView(CustomTableView);
-        LocalRecRef.ReadIsolation := RecRef.ReadIsolation::ReadCommitted;
 
         TempDataEditorBufferRecRef.GetTable(Rec);
         TempDataEditorBufferRecRef.FilterGroup(10);
@@ -7067,6 +7044,7 @@ page 81000 "DET Data Editor Buffer"
         xFieldRefVar: FieldRef;
         FieldInfo: Dictionary of [Integer, Text];
         OriginalFieldNo: Integer;
+        ValueVariant: Variant;
     begin
         if not DataOperations.GetRecord(RecRef, Rec."Source Record ID") then
             exit;
@@ -7082,10 +7060,11 @@ page 81000 "DET Data Editor Buffer"
                 DataEditorMgt.LogRename(RecRef.Number(), FieldRefVar.Number(), RecRef.RecordId(), xFieldRefVar, FieldRefVar, true);
             exit;
         end;
+        DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), NewValue, ValueVariant);
         if WithoutValidate then
-            DataOperations.SetFieldRefValue(FieldRefVar, DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), NewValue))
+            DataOperations.SetFieldRefValue(FieldRefVar, ValueVariant)
         else
-            DataOperations.ValidateFieldRefValue(FieldRefVar, DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), NewValue));
+            DataOperations.ValidateFieldRefValue(FieldRefVar, ValueVariant);
         DataOperations.ModifyRecord(RecRef, not WithoutValidate);
 
         if IsLogEnabled then

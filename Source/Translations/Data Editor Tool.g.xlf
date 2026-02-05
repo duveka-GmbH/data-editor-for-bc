@@ -5148,11 +5148,6 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page DET Select Fields - Action Set Included - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Enum 2951046972 - EnumValue 1819335129 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Excel</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum DET File Format - EnumValue Excel - Property Caption</note>
-        </trans-unit>
         <trans-unit id="Enum 2951046972 - EnumValue 2264048100 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>JSON</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -5197,11 +5192,6 @@
           <source>Rename</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Enum DET Log Action Type - EnumValue Rename - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="PermissionSet 751298128 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Data Editor Tool</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PermissionSet DET Data Editor Tool - Property Caption</note>
         </trans-unit>
       </group>
     </body>

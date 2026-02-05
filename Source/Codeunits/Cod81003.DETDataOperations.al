@@ -19,7 +19,6 @@ codeunit 81003 "DET Data Operations"
      tabledata "Service Invoice Header" = rimd, tabledata "Service Cr.Memo Header" = rimd, TableData "Issued Reminder Header" = rimd, TableData "Issued Fin. Charge Memo Header" = rimd,
      tabledata "G/L Entry - VAT Entry Link" = rimd, tabledata "Item Application Entry" = rimd, tabledata "Item Application Entry History" = rimd,
      tabledata "Return Shipment Header" = rimd, tabledata "Return Shipment Line" = rimd, tabledata "Return Receipt Header" = rimd, tabledata "Return Receipt Line" = rimd,
-     tabledata "Invt. Receipt Header" = rimd, tabledata "Invt. Receipt Line" = rimd, tabledata "Invt. Shipment Header" = rimd, tabledata "Invt. Shipment Line" = rimd,
      tabledata "Pstd. Phys. Invt. Record Hdr" = rimd, tabledata "Pstd. Phys. Invt. Record Line" = rimd, tabledata "Pstd. Phys. Invt. Order Hdr" = rimd, tabledata "Pstd. Phys. Invt. Order Line" = rimd,
      tabledata "Bank Account Statement Line" = rimd, tabledata "Change Log Entry" = rimd, tabledata "Posted Approval Entry" = rimd, tabledata "FA Register" = rimd, tabledata "Post Value Entry to G/L" = rimd,
      tabledata "Job Register" = rimd, tabledata "Cancelled Document" = rimd;
@@ -130,6 +129,7 @@ codeunit 81003 "DET Data Operations"
         KeyCount: Integer;
         DictOfFieldKeyType: Dictionary of [Integer, Text];
         KeyValueIndexRelDict: Dictionary of [Integer, Text[2048]];
+        ValueVariant: Variant;
     begin
         KeyRefVar := inRecRef.KeyIndex(1);
         xRecRef := inRecRef.Duplicate();
@@ -149,7 +149,8 @@ codeunit 81003 "DET Data Operations"
         if BindSubscription(SingleInstanceStorage) then;
 
         RecordRefTemp := inRecRef.Duplicate();
-        RecordRefTemp.Field(FieldRefVar.Number()).Value(DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), Format(NewValueAsVariant))); //why?
+        DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), Format(NewValueAsVariant), ValueVariant);
+        RecordRefTemp.Field(FieldRefVar.Number()).Value(ValueVariant);
 
         case KeyValueIndexRelDict.Count() of
             1:

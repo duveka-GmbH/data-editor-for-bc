@@ -10,8 +10,9 @@ enum 81002 "DET File Format"
     {
         Caption = 'JSON';
     }
-    value(1; Excel)
-    {
-        Caption = 'Excel';
-    }
+    // BC17: Excel option commented out - not supported
+    // value(1; Excel)
+    // {
+    //     Caption = 'Excel';
+    // }
 }

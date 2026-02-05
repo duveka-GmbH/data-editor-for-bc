@@ -41,14 +41,13 @@ codeunit 81002 "DET Read Data Batch"
         TableNo := JToken.AsValue().AsInteger();
 
         JObject.Get('FieldNumbersToRead', JToken);
-        LoadFieldNoList := DataEditorMgt.ConvertListTextToListInteger(JToken.AsValue().AsText().Split(','));
+        DataEditorMgt.ConvertListTextToListInteger(JToken.AsValue().AsText().Split(','), LoadFieldNoList);
 
         JObject.Get('IsParallelRun', JToken);
         IsParallelRun := JToken.AsValue().AsBoolean();
 
         RecRef.Open(TableNo);
         RecRef.SetView(FilterView);
-        RecRef.ReadIsolation := RecRef.ReadIsolation::ReadCommitted;
         InitLoadFields(RecRef);
 
         DataOperations.GetTable(TempDataEditorBufferRecRef, Rec);

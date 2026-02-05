@@ -4,7 +4,6 @@
 // Original author — Volodymyr Dvernytskyi (Data Editor Tool)
 page 81008 "DET Query Preset"
 {
-    ApplicationArea = All;
     Caption = 'Data Editor Preset';
     PageType = Worksheet;
     SourceTable = "DET Query Preset";
@@ -19,20 +18,24 @@ page 81008 "DET Query Preset"
                 field("Code"; Rec."Code")
                 {
                     ToolTip = 'Specifies the value of the Code field.';
+                    ApplicationArea = All;
                 }
                 field(Name; Rec.Name)
                 {
                     ToolTip = 'Specifies the value of the Name field.';
+                    ApplicationArea = All;
                 }
                 field(Description; Rec.Description)
                 {
                     ToolTip = 'Specifies the value of the Description field.';
+                    ApplicationArea = All;
                 }
                 field(EmptyField; Rec.IsEmptyJson())
                 {
                     Caption = 'Is Empty';
                     Editable = false;
                     ToolTip = 'Specifies wether the json data of this record is empty.';
+                    ApplicationArea = All;
                 }
             }
         }
@@ -40,22 +43,6 @@ page 81008 "DET Query Preset"
 
     actions
     {
-        area(Promoted)
-        {
-            actionref(ShowJSONString_promoted; ShowJSONString)
-            {
-
-            }
-            actionref(ImportJSON_promoted; ImportJSON)
-            {
-
-            }
-            actionref(ExportJSON_promoted; ExportJSON)
-            {
-
-            }
-
-        }
         area(Processing)
         {
             action(ShowJSONString)
@@ -64,6 +51,8 @@ page 81008 "DET Query Preset"
                 Caption = 'Show Json';
                 ToolTip = 'Show Json';
                 Image = ShowList;
+                Promoted = true;
+                PromotedCategory = Process;
                 trigger OnAction()
                 var
                     PresetJsonString: Text;
@@ -78,6 +67,8 @@ page 81008 "DET Query Preset"
                 Caption = 'Import Json';
                 ToolTip = 'Import Json';
                 Image = Import;
+                Promoted = true;
+                PromotedCategory = Process;
 
                 trigger OnAction()
                 var
@@ -108,6 +99,8 @@ page 81008 "DET Query Preset"
                 Caption = 'Export Json';
                 ToolTip = 'Export Json';
                 Image = Export;
+                Promoted = true;
+                PromotedCategory = Process;
                 trigger OnAction()
                 var
                     FileNamePatternLbl: Label 'DET_Preset_%1.json', Locked = true;

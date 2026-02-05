@@ -11,7 +11,6 @@ page 81005 "DET Select Fields"
     InsertAllowed = false;
     DeleteAllowed = false;
     UsageCategory = None;
-    ApplicationArea = All;
 
     layout
     {
@@ -26,6 +25,7 @@ page 81005 "DET Select Fields"
                     ToolTip = 'Included';
                     Enabled = not Rec.IsPartOfPrimaryKey;
                     Visible = not OneFieldMode;
+                    ApplicationArea = All;
                     trigger OnValidate()
                     begin
                         CurrPage.Update(true);
@@ -34,6 +34,7 @@ page 81005 "DET Select Fields"
                 field("Field Id"; Rec."Field Id")
                 {
                     ToolTip = 'Specifies the value of the Field Id field.';
+                    ApplicationArea = All;
                 }
 
                 field(Name; Rec.Name)
@@ -41,14 +42,17 @@ page 81005 "DET Select Fields"
                     Editable = false;
                     Caption = 'Name';
                     ToolTip = 'Specifies the names of the available Windows languages.';
+                    ApplicationArea = All;
                 }
                 field("App Name"; Rec."App Name")
                 {
                     ToolTip = 'Specifies the name of the Extension that this field belongs to.';
+                    ApplicationArea = All;
                 }
                 field("App Publisher"; Rec."App Publisher")
                 {
                     ToolTip = 'Specifies the publisher of the Extension that this field belongs to.';
+                    ApplicationArea = All;
                 }
             }
         }
@@ -64,6 +68,9 @@ page 81005 "DET Select Fields"
                 ToolTip = 'Set Included';
                 Image = Completed;
                 Visible = not OneFieldMode;
+                Promoted = true;
+                PromotedCategory = Process;
+                ApplicationArea = All;
                 trigger OnAction()
                 begin
                     CurrPage.SetSelectionFilter(Rec);
@@ -78,6 +85,9 @@ page 81005 "DET Select Fields"
                 ToolTip = 'Clear Included';
                 Image = ResetStatus;
                 Visible = not OneFieldMode;
+                Promoted = true;
+                PromotedCategory = Process;
+                ApplicationArea = All;
                 trigger OnAction()
                 begin
                     CurrPage.SetSelectionFilter(Rec);
@@ -91,18 +101,6 @@ page 81005 "DET Select Fields"
                     Rec.Reset();
                     CurrPage.Update(false);
                 end;
-            }
-        }
-        area(Promoted)
-        {
-            group(Category_Process)
-            {
-                actionref("Set Included_Promoted"; "Set Included")
-                {
-                }
-                actionref("Clear Included_Promoted"; "Clear Included")
-                {
-                }
             }
         }
     }
@@ -133,7 +131,8 @@ page 81005 "DET Select Fields"
                 Rec.IsPartOfPrimaryKey := FieldRec.IsPartOfPrimaryKey;
                 Rec.Included := FieldRec.IsPartOfPrimaryKey or not FieldRec2.IsEmpty();
                 Rec.Name := FieldRec."Field Caption";
-                Rec."App Package ID" := FieldRec."App Package ID";
+                // BC17: App Package ID not available on Field record
+                // Rec."App Package ID" := FieldRec."App Package ID";
                 Rec.Insert();
             until FieldRec.Next() = 0;
 

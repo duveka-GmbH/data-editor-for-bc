@@ -269,91 +269,91 @@ page 81004 "DET Insert New Record"
             exit;
 
         if FieldVisible1 and IsFieldInitialized[1] then begin
-            FieldRefToInsert := GetFieldRefByCounter(1);
+            GetFieldRefByCounter(1, FieldRefToInsert);
             DataOperations.SetFieldRefValue(FieldRefToInsert, VariantValue1);
             if not WithoutValidation then
                 DataOperations.ValidateFieldRefValue(FieldRefToInsert);
         end;
         if FieldVisible2 and IsFieldInitialized[2] then begin
-            FieldRefToInsert := GetFieldRefByCounter(2);
+            GetFieldRefByCounter(2, FieldRefToInsert);
             DataOperations.SetFieldRefValue(FieldRefToInsert, VariantValue2);
             if not WithoutValidation then
                 DataOperations.ValidateFieldRefValue(FieldRefToInsert);
         end;
         if FieldVisible3 and IsFieldInitialized[3] then begin
-            FieldRefToInsert := GetFieldRefByCounter(3);
+            GetFieldRefByCounter(3, FieldRefToInsert);
             DataOperations.SetFieldRefValue(FieldRefToInsert, VariantValue3);
             if not WithoutValidation then
                 DataOperations.ValidateFieldRefValue(FieldRefToInsert);
         end;
         if FieldVisible4 and IsFieldInitialized[4] then begin
-            FieldRefToInsert := GetFieldRefByCounter(4);
+            GetFieldRefByCounter(4, FieldRefToInsert);
             DataOperations.SetFieldRefValue(FieldRefToInsert, VariantValue4);
             if not WithoutValidation then
                 DataOperations.ValidateFieldRefValue(FieldRefToInsert);
         end;
         if FieldVisible5 and IsFieldInitialized[5] then begin
-            FieldRefToInsert := GetFieldRefByCounter(5);
+            GetFieldRefByCounter(5, FieldRefToInsert);
             DataOperations.SetFieldRefValue(FieldRefToInsert, VariantValue5);
             if not WithoutValidation then
                 DataOperations.ValidateFieldRefValue(FieldRefToInsert);
         end;
         if FieldVisible6 and IsFieldInitialized[6] then begin
-            FieldRefToInsert := GetFieldRefByCounter(6);
+            GetFieldRefByCounter(6, FieldRefToInsert);
             DataOperations.SetFieldRefValue(FieldRefToInsert, VariantValue6);
             if not WithoutValidation then
                 DataOperations.ValidateFieldRefValue(FieldRefToInsert);
         end;
         if FieldVisible7 and IsFieldInitialized[7] then begin
-            FieldRefToInsert := GetFieldRefByCounter(7);
+            GetFieldRefByCounter(7, FieldRefToInsert);
             DataOperations.SetFieldRefValue(FieldRefToInsert, VariantValue7);
             if not WithoutValidation then
                 DataOperations.ValidateFieldRefValue(FieldRefToInsert);
         end;
         if FieldVisible8 and IsFieldInitialized[8] then begin
-            FieldRefToInsert := GetFieldRefByCounter(8);
+            GetFieldRefByCounter(8, FieldRefToInsert);
             DataOperations.SetFieldRefValue(FieldRefToInsert, VariantValue8);
             if not WithoutValidation then
                 DataOperations.ValidateFieldRefValue(FieldRefToInsert);
         end;
         if FieldVisible9 and IsFieldInitialized[9] then begin
-            FieldRefToInsert := GetFieldRefByCounter(9);
+            GetFieldRefByCounter(9, FieldRefToInsert);
             DataOperations.SetFieldRefValue(FieldRefToInsert, VariantValue9);
             if not WithoutValidation then
                 DataOperations.ValidateFieldRefValue(FieldRefToInsert);
         end;
         if FieldVisible10 and IsFieldInitialized[10] then begin
-            FieldRefToInsert := GetFieldRefByCounter(10);
+            GetFieldRefByCounter(10, FieldRefToInsert);
             DataOperations.SetFieldRefValue(FieldRefToInsert, VariantValue10);
             if not WithoutValidation then
                 DataOperations.ValidateFieldRefValue(FieldRefToInsert);
         end;
         if FieldVisible11 and IsFieldInitialized[11] then begin
-            FieldRefToInsert := GetFieldRefByCounter(11);
+            GetFieldRefByCounter(11, FieldRefToInsert);
             DataOperations.SetFieldRefValue(FieldRefToInsert, VariantValue11);
             if not WithoutValidation then
                 DataOperations.ValidateFieldRefValue(FieldRefToInsert);
         end;
         if FieldVisible12 and IsFieldInitialized[12] then begin
-            FieldRefToInsert := GetFieldRefByCounter(12);
+            GetFieldRefByCounter(12, FieldRefToInsert);
             DataOperations.SetFieldRefValue(FieldRefToInsert, VariantValue12);
             if not WithoutValidation then
                 DataOperations.ValidateFieldRefValue(FieldRefToInsert);
         end;
         if FieldVisible13 and IsFieldInitialized[13] then begin
-            FieldRefToInsert := GetFieldRefByCounter(13);
+            GetFieldRefByCounter(13, FieldRefToInsert);
             DataOperations.SetFieldRefValue(FieldRefToInsert, VariantValue13);
             if not WithoutValidation then
                 DataOperations.ValidateFieldRefValue(FieldRefToInsert);
         end;
         if FieldVisible14 and IsFieldInitialized[14] then begin
-            FieldRefToInsert := GetFieldRefByCounter(14);
+            GetFieldRefByCounter(14, FieldRefToInsert);
             DataOperations.SetFieldRefValue(FieldRefToInsert, VariantValue14);
             if not WithoutValidation then
                 DataOperations.ValidateFieldRefValue(FieldRefToInsert);
         end;
         if FieldVisible15 and IsFieldInitialized[15] then begin
-            FieldRefToInsert := GetFieldRefByCounter(15);
+            GetFieldRefByCounter(15, FieldRefToInsert);
             DataOperations.SetFieldRefValue(FieldRefToInsert, VariantValue15);
             if not WithoutValidation then
                 DataOperations.ValidateFieldRefValue(FieldRefToInsert);
@@ -567,51 +567,51 @@ page 81004 "DET Insert New Record"
 
         case FieldCounter of
             1:
-                VariantValue1 := DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), NewValue);
+                DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), NewValue, VariantValue1);
             2:
-                VariantValue2 := DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), NewValue);
+                DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), NewValue, VariantValue2);
             3:
-                VariantValue3 := DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), NewValue);
+                DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), NewValue, VariantValue3);
             4:
-                VariantValue4 := DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), NewValue);
+                DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), NewValue, VariantValue4);
             5:
-                VariantValue5 := DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), NewValue);
+                DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), NewValue, VariantValue5);
             6:
-                VariantValue6 := DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), NewValue);
+                DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), NewValue, VariantValue6);
             7:
-                VariantValue7 := DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), NewValue);
+                DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), NewValue, VariantValue7);
             8:
-                VariantValue8 := DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), NewValue);
+                DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), NewValue, VariantValue8);
             9:
-                VariantValue9 := DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), NewValue);
+                DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), NewValue, VariantValue9);
             10:
-                VariantValue10 := DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), NewValue);
+                DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), NewValue, VariantValue10);
             11:
-                VariantValue11 := DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), NewValue);
+                DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), NewValue, VariantValue11);
             12:
-                VariantValue12 := DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), NewValue);
+                DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), NewValue, VariantValue12);
             13:
-                VariantValue13 := DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), NewValue);
+                DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), NewValue, VariantValue13);
             14:
-                VariantValue14 := DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), NewValue);
+                DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), NewValue, VariantValue14);
             15:
-                VariantValue15 := DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), NewValue);
+                DataEditorMgt.TextValueAsVariant(FieldRefVar.Type(), NewValue, VariantValue15);
         end;
     end;
 
-    local procedure GetFieldRefByCounter(FieldCounter: Integer): FieldRef
+    local procedure GetFieldRefByCounter(FieldCounter: Integer; var FieldRefResult: FieldRef)
     var
         OriginalFieldNo: Integer;
         FieldInfoDictionaty: Dictionary of [Integer, Text];
     begin
         FieldInfoDictionaty := GenFieldInfoDict.Get(FieldCounter);
         foreach OriginalFieldNo in FieldInfoDictionaty.Keys() do
-            exit(GlobalRecRef.Field(OriginalFieldNo));
+            FieldRefResult := GlobalRecRef.Field(OriginalFieldNo);
     end;
 
-    procedure GetResultRecordID(): RecordId
+    procedure GetResultRecordID(var ResultRecordId: RecordId)
     begin
-        exit(GlobalRecRef.RecordId());
+        ResultRecordId := GlobalRecRef.RecordId();
     end;
 
     var

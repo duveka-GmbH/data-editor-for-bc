@@ -91,12 +91,13 @@ codeunit 81001 "DET Data Editor Mgt."
             exit(true);
     end;
 
-    procedure GetPKFieldNoListAsTxt(inRecRef: RecordRef) PKFieldNoList: List of [Text]
+    procedure GetPKFieldNoListAsTxt(inRecRef: RecordRef; var PKFieldNoList: List of [Text])
     var
         FieldRefVar2: FieldRef;
         KeyRefVar: KeyRef;
         KeyCount: Integer;
     begin
+        Clear(PKFieldNoList);
         KeyRefVar := inRecRef.KeyIndex(1);
         for KeyCount := 1 to KeyRefVar.FieldCount() do begin
             FieldRefVar2 := KeyRefVar.FieldIndex(KeyCount);
@@ -109,11 +110,13 @@ codeunit 81001 "DET Data Editor Mgt."
         FieldRefVar: FieldRef;
         ListOfFieldNo: List of [Integer];
         FieldNo: Integer;
+        ValueVariant: Variant;
     begin
         ListOfFieldNo := PKFieldNoValueDict.Keys();
         foreach FieldNo in ListOfFieldNo do begin
             FieldRefVar := xRecRef.Field(FieldNo);
-            DataOperations.SetFieldRefValue(FieldRefVar, TextValueAsVariant(FieldRefVar.Type, PKFieldNoValueDict.Get(FieldNo)));
+            TextValueAsVariant(FieldRefVar.Type, PKFieldNoValueDict.Get(FieldNo), ValueVariant);
+            DataOperations.SetFieldRefValue(FieldRefVar, ValueVariant);
         end;
         IsFound := DataOperations.FindRecord(xRecRef);
     end;
@@ -131,6 +134,7 @@ codeunit 81001 "DET Data Editor Mgt."
         FileFormat: Enum "DET File Format";
         FileInStream: InStream;
         FileFilter: Text;
+        FromFile: Text;
     begin
         ImportExportDialog.Caption('Import Dialog');
         ImportExportDialog.SetIsImport(true);
@@ -143,22 +147,20 @@ codeunit 81001 "DET Data Editor Mgt."
         case FileFormat of
             FileFormat::JSON:
                 FileFilter := JSONFilterLbl;
-            FileFormat::Excel:
-                FileFilter := ExcelFilterLbl;
         end;
 
         TempBlob.CreateInStream(FileInStream, TextEncoding::UTF8);
-        if not UploadIntoStream(FileFilter, FileInStream) then
+        if not UploadIntoStream('', '', FileFilter, FromFile, FileInStream) then
             exit;
 
         case FileFormat of
             FileFormat::JSON:
                 ImportJSON(FileInStream, ImportOnFind, WithValidation);
-            FileFormat::Excel:
-                ImportExcel(FileInStream, ImportOnFind, WithValidation);
         end;
     end;
 
+    // BC17: Excel import/export commented out due to missing "Cell Value as Blob" field
+    /*
     local procedure ImportExcel(var FileInStream: InStream; ImportOnFind: Enum "DET Import On Find"; WithValidation: Boolean)
     var
         TempExcelBuffer: Record "Excel Buffer" temporary;
@@ -197,10 +199,8 @@ codeunit 81001 "DET Data Editor Mgt."
         Evaluate(TableNo, TempExcelBuffer.GetValueByCellName('B1'));
 
         RecRef.Open(TableNo);
-        RecRef.ReadIsolation := RecRef.ReadIsolation::ReadCommitted;
 
         xRecRef.Open(TableNo);
-        xRecRef.ReadIsolation := xRecRef.ReadIsolation::ReadCommitted;
 
         TempExcelBuffer.SetRange("Row No.", 3);
         ColumnCount := TempExcelBuffer.Count();
@@ -278,6 +278,7 @@ codeunit 81001 "DET Data Editor Mgt."
         if GuiAllowed() then
             Message(ResultMsg.ToText());
     end;
+    */
 
     local procedure GetFieldNoFromName(TableNo: Integer; FieldName: Text): Integer
     var
@@ -322,10 +323,8 @@ codeunit 81001 "DET Data Editor Mgt."
             Clear(RecRef);
 
             RecRef.Open(TableNo);
-            RecRef.ReadIsolation := RecRef.ReadIsolation::ReadCommitted;
 
             xRecRef.Open(TableNo);
-            xRecRef.ReadIsolation := xRecRef.ReadIsolation::ReadCommitted;
 
             JArray := JToken.AsArray();
 
@@ -336,13 +335,13 @@ codeunit 81001 "DET Data Editor Mgt."
                 RecRef.Init();
                 ListOfFields := JToken.AsObject().Keys();
 
-                PKFieldNoList := GetPKFieldNoListAsTxt(RecRef);
+                GetPKFieldNoListAsTxt(RecRef, PKFieldNoList);
                 foreach FieldNoAsTxt in PKFieldNoList do begin
                     JToken.AsObject().Get(FieldNoAsTxt, JTokenField);
                     Evaluate(FieldNo, FieldNoAsTxt);
                     PKFieldNoValueDict.Add(FieldNo, JTokenField.AsValue().AsText());
                 end;
-                ToChangeFieldNoList := ConvertListTextToListInteger(ListOfFields);
+                ConvertListTextToListInteger(ListOfFields, ToChangeFieldNoList);
                 IsRecordExist := FindxRecRef(xRecRef, PKFieldNoValueDict);
                 if IsRecordExist then
                     InitUnchangedFields(RecRef, xRecRef, ToChangeFieldNoList);
@@ -373,6 +372,7 @@ codeunit 81001 "DET Data Editor Mgt."
     local procedure UpdateRecord(ValueAsTxt: Text; var RecRef: RecordRef; var xRecRef: RecordRef; var FieldRef: FieldRef; ImportOnFind: Enum "DET Import On Find"; IsRecordExist: Boolean; WithValidation: Boolean; IsLogEnabled: Boolean)
     var
         xFieldRef: FieldRef;
+        ValueVariant: Variant;
     begin
         if IsRecordExist and (ImportOnFind = ImportOnFind::Skip) then
             exit;
@@ -380,10 +380,11 @@ codeunit 81001 "DET Data Editor Mgt."
         if IsRecordExist then
             xFieldRef := xRecRef.Field(FieldRef.Number());
 
+        TextValueAsVariant(FieldRef.Type, ValueAsTxt, ValueVariant);
         if WithValidation then
-            DataOperations.ValidateFieldRefValue(FieldRef, TextValueAsVariant(FieldRef.Type, ValueAsTxt))
+            DataOperations.ValidateFieldRefValue(FieldRef, ValueVariant)
         else
-            DataOperations.SetFieldRefValue(FieldRef, TextValueAsVariant(FieldRef.Type, ValueAsTxt));
+            DataOperations.SetFieldRefValue(FieldRef, ValueVariant);
 
         if not IsLogEnabled then
             exit;
@@ -458,11 +459,11 @@ codeunit 81001 "DET Data Editor Mgt."
         case FileFormat of
             FileFormat::JSON:
                 ExportJSON(DataEditorBuffer, FieldIdsToExport, ExportBLOB, ExportMedia);
-            FileFormat::Excel:
-                ExportExcel(DataEditorBuffer, FieldIdsToExport, ExportBLOB, ExportMedia);
         end;
     end;
 
+    // BC17: Excel export procedures commented out due to missing "Cell Value as Blob" field
+    /*
     local procedure ExportExcel(var DataEditorBuffer: Record "DET Data Editor Buffer"; FieldIdsToExport: List of [Integer]; ExportBLOB: Boolean; ExportMedia: Boolean)
     var
         TempExcelBuffer: Record "Excel Buffer" temporary;
@@ -474,7 +475,6 @@ codeunit 81001 "DET Data Editor Mgt."
     begin
         if DataEditorBuffer.FindSet() then begin
             RecRef.Open(DataEditorBuffer."Source Record ID".TableNo());
-            RecRef.ReadIsolation := RecRef.ReadIsolation::ReadCommitted;
 
             CreateExcelHeader(RecRef, TempExcelBuffer, FieldIdsToExport, ExportBLOB, ExportMedia);
 
@@ -583,6 +583,7 @@ codeunit 81001 "DET Data Editor Mgt."
                     end;
         end;
     end;
+    */
 
     local procedure ExportJSON(var DataEditorBuffer: Record "DET Data Editor Buffer"; FieldIdsToExport: List of [Integer]; ExportBLOB: Boolean; ExportMedia: Boolean)
     var
@@ -596,7 +597,6 @@ codeunit 81001 "DET Data Editor Mgt."
     begin
         if DataEditorBuffer.FindSet() then begin
             RecRef.Open(DataEditorBuffer."Source Record ID".TableNo());
-            RecRef.ReadIsolation := RecRef.ReadIsolation::ReadCommitted;
             repeat
                 DataOperations.GetRecord(RecRef, DataEditorBuffer."Source Record ID");
                 JArray.Add(CreateJSONObjectFromRecord(RecRef, FieldIdsToExport, ExportBLOB, ExportMedia));
@@ -622,6 +622,7 @@ codeunit 81001 "DET Data Editor Mgt."
         TempBlob: Codeunit "Temp Blob";
         Base64Convert: Codeunit "Base64 Convert";
         FieldRefVar: FieldRef;
+        BlobInStream: InStream;
         BooleanValue: Boolean;
         i: Integer;
     begin
@@ -648,7 +649,8 @@ codeunit 81001 "DET Data Editor Mgt."
                                     if ExportBLOB then begin
                                         FieldRefVar.CalcField();
                                         TempBlob.FromFieldRef(FieldRefVar);
-                                        JObject.Add(Format(FieldRefVar.Number()), Base64Convert.ToBase64(TempBlob.CreateInStream()));
+                                        TempBlob.CreateInStream(BlobInStream);
+                                        JObject.Add(Format(FieldRefVar.Number()), Base64Convert.ToBase64(BlobInStream));
                                     end;
                                 else
                                     JObject.Add(Format(FieldRefVar.Number()), Format(FieldRefVar.Value));
@@ -731,7 +733,7 @@ codeunit 81001 "DET Data Editor Mgt."
             DataEditorLog.SetBLOBTextData(DataEditorLog.FieldNo("New Value BLOB"), Format(NewValue.Value()), TextEncoding::UTF8);
     end;
 
-    procedure TextValueAsVariant(FieldTypeVar: FieldType; ValueAsText: Text): Variant
+    procedure TextValueAsVariant(FieldTypeVar: FieldType; ValueAsText: Text; var Result: Variant)
     var
         TempBinaryDataBuffer: Record "DET Binary Data Buffer" temporary;
         Base64Convert: Codeunit "Base64 Convert";
@@ -750,62 +752,62 @@ codeunit 81001 "DET Data Editor Mgt."
     begin
         case FieldTypeVar of
             FieldTypeVar::Code, FieldTypeVar::Text:
-                exit(ValueAsText);
+                Result := ValueAsText;
             FieldTypeVar::Integer:
                 begin
                     Evaluate(IntegerValue, ValueAsText);
-                    exit(IntegerValue);
+                    Result := IntegerValue;
                 end;
             FieldTypeVar::Decimal:
                 begin
                     Evaluate(DecimalValue, ValueAsText);
-                    exit(DecimalValue);
+                    Result := DecimalValue;
                 end;
             FieldTypeVar::Boolean:
                 begin
                     Evaluate(BooleanValue, ValueAsText);
-                    exit(BooleanValue);
+                    Result := BooleanValue;
                 end;
             FieldTypeVar::Date:
                 begin
                     Evaluate(DateValue, ValueAsText);
-                    exit(DateValue);
+                    Result := DateValue;
                 end;
             FieldTypeVar::DateFormula:
                 begin
                     Evaluate(DateFormulaValue, ValueAsText);
-                    exit(DateFormulaValue);
+                    Result := DateFormulaValue;
                 end;
             FieldTypeVar::DateTime:
                 begin
                     Evaluate(DateTimeValue, ValueAsText);
-                    exit(DateTimeValue);
+                    Result := DateTimeValue;
                 end;
             FieldTypeVar::Time:
                 begin
                     Evaluate(TimeValue, ValueAsText);
-                    exit(TimeValue);
+                    Result := TimeValue;
                 end;
             FieldTypeVar::Guid:
                 begin
                     Evaluate(GuidValue, ValueAsText);
-                    exit(GuidValue);
+                    Result := GuidValue;
                 end;
             FieldTypeVar::BigInteger:
                 begin
                     Evaluate(BigIntegerValue, ValueAsText);
-                    exit(BigIntegerValue);
+                    Result := BigIntegerValue;
                 end;
             FieldTypeVar::Option:
                 begin
                     Evaluate(IntegerValue, ValueAsText);
-                    exit(IntegerValue);
+                    Result := IntegerValue;
                 end;
             FieldTypeVar::Blob:
                 begin
                     TempBinaryDataBuffer."Some BLOB".CreateOutStream(ValueOutStream);
                     Base64Convert.FromBase64(ValueAsText, ValueOutStream);
-                    exit(TempBinaryDataBuffer."Some BLOB");
+                    Result := TempBinaryDataBuffer."Some BLOB";
                 end;
             FieldTypeVar::Media:
                 begin
@@ -813,10 +815,10 @@ codeunit 81001 "DET Data Editor Mgt."
                     Base64Convert.FromBase64(ValueAsText, ValueOutStream);
                     TempBlob.CreateInStream(ValueInStream);
                     TempBinaryDataBuffer."Some Media".ImportStream(ValueInStream, '');
-                    exit(TempBinaryDataBuffer."Some Media");
+                    Result := TempBinaryDataBuffer."Some Media";
                 end;
             else
-                exit(ValueAsText);
+                Result := ValueAsText;
         end;
     end;
 
@@ -839,11 +841,12 @@ codeunit 81001 "DET Data Editor Mgt."
         exit(MediaBase64);
     end;
 
-    procedure ConvertListTextToListInteger(ListOfText: List of [Text]) ListOfInteger: List of [Integer]
+    procedure ConvertListTextToListInteger(ListOfText: List of [Text]; var ListOfInteger: List of [Integer])
     var
         EntryAsTxt: Text;
         EntryAsInteger: Integer;
     begin
+        Clear(ListOfInteger);
         foreach EntryAsTxt in ListOfText do
             if Evaluate(EntryAsInteger, EntryAsTxt) then
                 ListOfInteger.Add(EntryAsInteger);
@@ -860,11 +863,12 @@ codeunit 81001 "DET Data Editor Mgt."
                 Response += Separator + Format(Entry);
     end;
 
-    procedure SplitTextIntoChunks(TextToSplit: Text; ChunkSize: Integer) Result: List of [text]
+    procedure SplitTextIntoChunks(TextToSplit: Text; ChunkSize: Integer; var Result: List of [Text])
     var
         Chunk: Text;
         Position: Integer;
     begin
+        Clear(Result);
         if TextToSplit = '' then
             exit;
 
